@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    env_file:
+      - fileName
+    ports:
+      - 27017:27017
