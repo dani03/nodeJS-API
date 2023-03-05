@@ -63,8 +63,8 @@ export const storeMaquette = (req, res, next) => {
     title: req.body.title,
     file_url: req.body.file_url,
     user: req.userId,
-    unapprovals: [],
-    approvals: [],
+    unaprovals: [],
+    aprovals: [],
   });
   console.log(maquette.user)
   maquette.save().then(result => {
@@ -88,13 +88,15 @@ export const storeMaquette = (req, res, next) => {
 }
 export const approvalMaquette = (req, res, next) => {
   //recuperation de la maquette
+  console.log('ici')
   const userId = req.userId;
   const maquetteId = req.params.maquetteId;
   const choice = req.body.approuve;
   Maquette.findById(maquetteId).then(maquette => {
-    if (choice == 'true') {
-      console.log("aprobation => ", maquette.aprovals.includes(userId), userId)
-      if (!maquette.aprovals.includes(userId) && maquette.unaprovals.includes(userId)) {
+    if (choice === 'true') {
+      console.log("aprobation => ", maquette.aprovals.includes(userId), "unapprovals =>", maquette.unaprovals.includes(userId))
+      if (!maquette.aprovals.includes(userId) && !maquette.unaprovals.includes(userId)) {
+
         maquette.aprovals.push(userId);
         maquette.save().then(result => {
           res.status(200).json({ message: "merci pour votre approbation", result: result })
@@ -102,17 +104,20 @@ export const approvalMaquette = (req, res, next) => {
           throw err;
         })
       }
-      res.status(422).json({ message: "impossible d'aprouver vous l'avez deja fait" })
+      res.status(422).json({ message: "impossible deffectuer cette action sur cette maquette vous l'avez deja fait" })
     } else {
-      if (!maquette.aprovals.includes(userId) && maquette.unaprovals.includes(userId)) {
+      if (!maquette.aprovals.includes(userId) && !maquette.unaprovals.includes(userId)) {
+
         maquette.unaprovals.push(userId);
         maquette.save().then(result => {
-          res.status(200).json({ message: "merci pour votre desapprobation" })
+          res.status(200).json({ message: "merci pour votre déapprobation", result: result })
         }).catch(err => {
           throw err;
         })
+
+
       }
-      res.status(422).json({ message: "impossible désaprouver vous l'avez deja fait" })
+      res.status(422).json({ message: "impossible deffectuer cette action sur cette maquette vous l'avez deja fait" })
     }
   }).catch(err => {
     throw err;
