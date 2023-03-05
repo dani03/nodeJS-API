@@ -9,7 +9,7 @@ router.get('/artist/me', (req, res) => {
 router.get('/artist/{:id}', (req, res) => {
     console.log('hello from artist')
 })
-router.post('/artist/store',[], ArtistController.storeArtist);
+router.post('/artist/store',[middleware.is_authenticate, middleware.isManager], ArtistController.storeArtist);
 
 
 export default router;

@@ -1,7 +1,5 @@
 import Maquette from "../models/Maquette.js";
-import mongodb from "mongodb";
 import User from "../models/User.js";
-import { response } from "express";
 
 export const showMaquette = (req, res, next) => {
   // res.send(req.params.maquetteId);
@@ -65,7 +63,8 @@ export const storeMaquette = (req, res, next) => {
     title: req.body.title,
     file_url: req.body.file_url,
     user: req.userId,
-
+    unapprovals: [],
+    approvals: [],
   });
   console.log(maquette.user)
   maquette.save().then(result => {
@@ -88,6 +87,36 @@ export const storeMaquette = (req, res, next) => {
 
 }
 export const approvalMaquette = (req, res, next) => {
+  //recuperation de la maquette
+  const userId = req.userId;
+  const maquetteId = req.params.maquetteId;
+  const choice = req.body.approuve;
+  Maquette.findById(maquetteId).then(maquette => {
+    if (choice == 'true') {
+      console.log("aprobation => ", maquette.aprovals.includes(userId), userId)
+      if (!maquette.aprovals.includes(userId) && maquette.unaprovals.includes(userId)) {
+        maquette.aprovals.push(userId);
+        maquette.save().then(result => {
+          res.status(200).json({ message: "merci pour votre approbation", result: result })
+        }).catch(err => {
+          throw err;
+        })
+      }
+      res.status(422).json({ message: "impossible d'aprouver vous l'avez deja fait" })
+    } else {
+      if (!maquette.aprovals.includes(userId) && maquette.unaprovals.includes(userId)) {
+        maquette.unaprovals.push(userId);
+        maquette.save().then(result => {
+          res.status(200).json({ message: "merci pour votre desapprobation" })
+        }).catch(err => {
+          throw err;
+        })
+      }
+      res.status(422).json({ message: "impossible désaprouver vous l'avez deja fait" })
+    }
+  }).catch(err => {
+    throw err;
+  })
 
 }
 export const listMaquettes = (req, res, next) => {
@@ -95,7 +124,7 @@ export const listMaquettes = (req, res, next) => {
   return User.findById(req.userId)
     .then(user => {
       //rechercher toutes les maquettes d'un user
-      return Maquette.find({_id : user.maquettes})
+      return Maquette.find({ _id: user.maquettes })
     }).then(results => {
       console.log(results)
       res.status(200).json([{ maquettes: results }]);

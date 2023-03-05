@@ -3,19 +3,31 @@ import User from "../models/User.js";
 
 
 export const storeArtist = (req, res) => {
-  const newUser = new User({
-    email: req.body.email,
-    password: req.body.password,
-    pseudo: req.body.role,
-    role: req.body.role,
-    maquettes: []
-  });
-  newUser.save().then(result => {
-    res.status(201).json({ message: 'utilisateur ajouté..', user: result });
-  })
-    .catch((err) => {
-      console.log(err);
+
+  const UserEmail = req.body.email;
+  const password = req.body.password;
+  const roleUser = req.body.role;
+  const pseudo = req.body.pseudo;
+  bcrypt.hash(password, 12).then(passwordHashed => {
+    const newUser = new User({
+      email: UserEmail,
+      password: passwordHashed,
+      role: roleUser,
+      pseudo: pseudo,
     })
+    return newUser.save().then(result => {
+      res.status(201).json({ message: "inscription reussie", userId: result._id })
+    }).catch(err => {
+      if (!err.statusCode) {
+        err.statusCode = 500
+      }
+    })
+  }).catch(err => {
+    console.log(err)
+    if (!err.statusCode) {
+      err.statusCode = 500
+    }
+  })
 
 }
 

@@ -99,7 +99,15 @@ const maquetteSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     //required: true
-  }
+  },
+  aprovals: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  unaprovals: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
 
 }, { timestamps: true });
 

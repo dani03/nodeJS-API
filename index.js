@@ -5,6 +5,7 @@ import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
 import maquetteRoutes from "./routes/maquette.js";
 import artistRoutes from "./routes/artist.js";
+import userRoutes from "./routes/user.js";
 import mongoose from "mongoose";
 
 
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 app.use('/auth', authRoutes);
 
 app.use(adminRoutes);
+app.use(userRoutes);
 
 app.use(maquetteRoutes);
 app.use(artistRoutes);
