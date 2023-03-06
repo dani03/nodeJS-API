@@ -1,9 +1,10 @@
 version: "3.8"
 
 services:
+  app:
+    build: .
+    ports:
+      - 9000:9000
   mongo:
     image: mongo
-    env_file:
-      - fileName
-    ports:
-      - 27017:27017
+    
