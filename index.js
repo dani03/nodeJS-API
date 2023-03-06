@@ -1,5 +1,6 @@
 
 import express from "express";
+import bcrypt from "bcryptjs";
 import bodyParser from "body-parser";
 import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
@@ -8,6 +9,7 @@ import artistRoutes from "./routes/artist.js";
 import userRoutes from "./routes/user.js";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
+import User from "./models/User.js";
 await dotenv.config();
 
 const app = express();
@@ -20,6 +22,32 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 })
+//creation de l'admin
+User.find({ 'role': 'admin' }).then(user => {
+
+  if (user.length <= 0) {
+    bcrypt.hash("password", 12).then(passwordHashed => {
+      const adminUser = new User({
+        email: "admin@admin.com",
+        password: passwordHashed,
+        role: 'admin',
+        pseudo: "adminitrateur",
+      })
+      return adminUser.save().then(result => {
+        console.log("connectez vous avec l'admin => ", adminUser)
+      }).catch(err => {
+        throw err;
+      });
+    }).catch(err => {
+      if (!err.statusCode) {
+        err.statusCode = 500
+      }
+    })
+  }
+}).catch(err => {
+  throw err;
+})
+
 
 //routes
 app.use('/auth', authRoutes);
