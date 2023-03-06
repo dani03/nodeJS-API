@@ -34,7 +34,7 @@ User.find({ 'role': 'admin' }).then(user => {
         pseudo: "adminitrateur",
       })
       return adminUser.save().then(result => {
-        console.log("connectez vous avec l'admin => ", adminUser)
+        console.log("connectez vous avec l'admin => ", adminUser, "mot de passe =>password")
       }).catch(err => {
         throw err;
       });
@@ -58,7 +58,6 @@ app.use(userRoutes);
 app.use(maquetteRoutes);
 app.use(artistRoutes);
 
-
 // Mongo.mongoConnected(() => {
 //   console.log('inside');
 //   app.listen(9000);
@@ -71,8 +70,6 @@ mongoose.connect(
   .then(result => {
     console.log("connect with mongoose")
     app.listen(9000);
-
-
   })
   .catch(err => {
     console.log(err)

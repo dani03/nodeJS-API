@@ -36,7 +36,7 @@ const isAdmin = (req, res, next) => {
       res.status(404).json({ message: "user not found" });
     }
     if (user.role !== 'admin') {
-      res.status(403).json({ message: "unauthorized" })
+      res.status(403).json({ message: "unauthorized you need are not admin" })
     }
   }).catch(err => {
     throw err;
@@ -50,7 +50,7 @@ const isManager = (req, res, next) => {
       res.status(404).json({ message: "user not found" });
     }
     if (user.role !== 'manager') {
-      res.status(403).json({ message: "unauthorized" })
+      res.status(403).json({ message: "unauthorized you need to be manager" })
     }
   }).catch(err => {
     throw err;
@@ -63,7 +63,7 @@ const isArtist = (req, res, next) => {
       res.status(404).json({ message: "user not found" });
     }
     if (user.role !== 'artist' || user.role !== 'admin') {
-      res.status(403).json({ message: "unauthorized" })
+      res.status(403).json({ message: "unauthorized you need to be artist" })
     }
   }).catch(err => {
     throw err;
