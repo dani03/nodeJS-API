@@ -7,7 +7,7 @@ import maquetteRoutes from "./routes/maquette.js";
 import artistRoutes from "./routes/artist.js";
 import userRoutes from "./routes/user.js";
 import mongoose from "mongoose";
-
+import config from "dotenv";
 
 
 const app = express();
