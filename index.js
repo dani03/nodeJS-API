@@ -7,8 +7,8 @@ import maquetteRoutes from "./routes/maquette.js";
 import artistRoutes from "./routes/artist.js";
 import userRoutes from "./routes/user.js";
 import mongoose from "mongoose";
-import config from "dotenv";
-
+import dotenv from 'dotenv';
+await dotenv.config();
 
 const app = express();
 
@@ -36,12 +36,15 @@ app.use(artistRoutes);
 //   app.listen(9000);
 
 // })
+
 mongoose.connect(
-  'mongodb://lesamessipa:RMS9Z8IMXbofrfSH@ac-w5qio3n-shard-00-00.dqsey2o.mongodb.net:27017,ac-w5qio3n-shard-00-01.dqsey2o.mongodb.net:27017,ac-w5qio3n-shard-00-02.dqsey2o.mongodb.net:27017/?ssl=true&replicaSet=atlas-11dggf-shard-0&authSource=admin&retryWrites=true&w=majority'
+  `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@ac-w5qio3n-shard-00-00.dqsey2o.mongodb.net:27017,ac-w5qio3n-shard-00-01.dqsey2o.mongodb.net:27017,ac-w5qio3n-shard-00-02.dqsey2o.mongodb.net:27017/?ssl=true&replicaSet=atlas-11dggf-shard-0&authSource=admin&retryWrites=true&w=majority`
 )
   .then(result => {
     console.log("connect with mongoose")
     app.listen(9000);
+
+
   })
   .catch(err => {
     console.log(err)
