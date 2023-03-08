@@ -64,7 +64,7 @@ export const login = (req, res, next) => {
         res.status(401).json({ message: "identifiant ou mot de passe incorrect" })
       }
       //generation du jwt
-     // console.log('generation token', 'et user', loadUser);
+      // console.log('generation token', 'et user', loadUser);
 
       const token = Jwt.sign({ userId: loadUser._id.toString(), role: loadUser.role, email: loadUser.email },
         'secrettoken', { expiresIn: '2h' });
