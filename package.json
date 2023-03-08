@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "daniel faycal",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^4.17.17",
     "@types/typescript": "^2.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -24,6 +24,9 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
-    "@types/jsonwebtoken": "^9.0.1"
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/node": "^18.14.6",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
   }
 }
