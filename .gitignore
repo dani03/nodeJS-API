@@ -1,3 +1,5 @@
-nodes_modules
+/nodes_modules
 .env
-data
+/data/*
+/env/*
+/logs
