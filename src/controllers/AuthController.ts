@@ -12,11 +12,20 @@ export const register = (req: any, res: any, next: any) => {
 
     // throw error;
     res.status(422).json({ message: "les champs ne sont pas bien remplis verifier" })
+    return;
   }
   const UserEmail = req.body.email;
   const password = req.body.password;
   const roleUser = req.body.role;
   const pseudo = req.body.pseudo;
+  //verification si le pseudo n'existe pas
+  User.findOne({ pseudo: pseudo }).then((user) => {
+    console.log(user);
+    if (user) {
+      res.status(422).json({ 'message': 'ce pseudo est deja pris choisissez en un autre' });
+      return;
+    }
+  });
   bcrypt.hash(password, 12).then(passwordHashed => {
     const newUser = new User({
       email: UserEmail,
