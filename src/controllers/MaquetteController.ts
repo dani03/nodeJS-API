@@ -8,6 +8,7 @@ export const showMaquette = (req: any, res: any, next: any) => {
   let maquetteId = req.params.maquetteId;
   Maquette.findById(maquetteId).then((maquette) => {
     res.json(maquette)
+    return;
   })
 }
 
@@ -68,7 +69,6 @@ export const storeMaquette = (req: any, res: any, next: any) => {
     unaprovals: [],
     aprovals: [],
   });
-  console.log(maquette.user)
   maquette.save().then(result => {
     return User.findById(req.userId);
   }).then((user) => {
@@ -79,7 +79,8 @@ export const storeMaquette = (req: any, res: any, next: any) => {
       return user.save();
 
     }
-    res.status(404).json({ message: 'not found user' })
+    res.status(404).json({ message: 'not found user' });
+
   })
     .then(resultat => {
       res.status(201).json({ message: "maquette ajouté avec success", maquette: maquette })
@@ -93,40 +94,39 @@ export const storeMaquette = (req: any, res: any, next: any) => {
 }
 export const approvalMaquette = (req: any, res: any, next: any) => {
   //recuperation de la maquette
-  console.log('ici')
+
   const userId = req.userId;
   const maquetteId = req.params.maquetteId;
   const choice = req.body.approuve;
   Maquette.findById(maquetteId).then(maquette => {
-    if (maquette) {
-      if (choice === 'true') {
-        if (!maquette.aprovals.includes(userId) && !maquette.unaprovals.includes(userId)) {
-
-          maquette.aprovals.push(userId);
-          maquette.save().then(() => {
-            res.status(200).json({ message: "merci pour votre approbation" })
-          }).catch(err => {
-            throw err;
-          })
-        }
-        res.status(422).json({ message: "impossible deffectuer cette action sur cette maquette vous l'avez deja fait" })
+    if (!maquette) {
+      res.status(404).json({ message: "not found maquette" })
+      return;
+    }
+    if (choice == 'true') {
+      if (!maquette.aprovals.includes(userId) && !maquette.unaprovals.includes(userId)) {
+        maquette.aprovals.push(userId);
+        maquette.save().then(() => {
+          res.status(200).json({ message: "merci pour votre approbation" })
+          return;
+        });
       } else {
-        if (!maquette.aprovals.includes(userId) && !maquette.unaprovals.includes(userId)) {
-
-          maquette.unaprovals.push(userId);
-          maquette.save().then(result => {
-            res.status(200).json({ message: "merci pour votre déapprobation", result: result })
-          }).catch(err => {
-            throw err;
-          })
-
-
-        }
         res.status(422).json({ message: "impossible deffectuer cette action sur cette maquette vous l'avez deja fait" })
+        return;
       }
     } else {
-      res.status(404).json({ message: ' maquette not found' })
+      if (!maquette.aprovals.includes(userId) && !maquette.unaprovals.includes(userId)) {
+        maquette.unaprovals.push(userId);
+        maquette.save().then(result => {
+          res.status(200).json({ message: "merci pour votre déapprobation", result: result })
+          return;
+        });
+      } else {
+        res.status(422).json({ message: "impossible deffectuer cette action sur cette maquette vous l'avez deja fait" })
+        return;
+      }
     }
+
   }).catch(err => {
     throw err;
   })
@@ -135,17 +135,16 @@ export const approvalMaquette = (req: any, res: any, next: any) => {
 export const listMaquettes = (req: any, res: any, next: any) => {
 
   return User.findById(req.userId)
-    .then((user) => {
+    .then((user: any) => {
       if (user) {
         //rechercher toutes les maquettes d'un user
         return Maquette.find({ _id: user.maquettes })
       }
-      res.status(404).json({ message: 'not found user ' })
+      if (user === null) {
+        res.status(404).json({ message: 'not found user ' })
+      }
     }).then(results => {
-
       res.status(200).json([{ maquettes: results }]);
-    }).catch(err => {
-      throw err;
     })
 }
 
