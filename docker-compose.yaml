@@ -5,8 +5,24 @@ services:
     image: mongo:4.2
     ports:
       - 27017:27017
-    volumes:
-      - ./data:/data/db
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    volumes: 
+      - data:/data/db
     env_file:
-      - ./.env
+      - ./env/mongo.env
+   
+  app:
+    build: ./
+    ports:
+      - '9000:9000'
+    volumes:
+      - logs:/app/logs
+      - ./:/app
+      - app/node_modules
+    env_file:
+      - ./env/mongo.env
+    depends_on:
+      - mongo
+volumes:
+  data:
+  logs:
+
