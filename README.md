@@ -42,5 +42,7 @@ au préalable  modifier les fichiers d'environement "env/mongo.env" et ".env" et
 ensuite vous pouvez lancez le projet si vous avez docker installer  en tapant la commande:
  `docker-compose up` ou `docker compose up --build app` afin de rebuild le dockerfile, le lancer laisser environ 1 minute lorsque dans la console apparaitra `connect with moongose` vous pouriez tester le projet via postman ou insomnia sur le PORT `9000` de votre machine ex:
  http://locahost:9000/auth/register . 
+ ou 
+ vous pouriez telecharger le projet et modifier les identifiants de connexion dans les fichiers d'environement `env/mongo.env` et `.env` et lancer le projet avec la commande `npm run start` et le projet est lancé. 
 
 
