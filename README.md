@@ -36,6 +36,11 @@ password: password
 
 vous pouvez vous connectez avec celui ci via postman ..
 
-vous pouvez lancez le projet en tapant la commande docker-compose up mais il est preferable l'installer 
+
+au préalable  modifier les fichiers d'environement "env/mongo.env" et ".env" et renseigner vos identifiants de connexion à mongoDB afin de vous connectez à votre base de données.
+
+ensuite vous pouvez lancez le projet si vous avez docker installer  en tapant la commande:
+ `docker-compose up` ou `docker compose up --build app` afin de rebuild le dockerfile, le lancer laisser environ 1 minute lorsque dans la console apparaitra `connect with moongose` vous pouriez tester le projet via postman ou insomnia sur le PORT `9000` de votre machine ex:
+ http://locahost:9000/auth/register . 
 
 
