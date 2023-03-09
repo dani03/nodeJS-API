@@ -11,7 +11,7 @@ router.post('/approval/maquette/:maquetteId', [middleware.is_authenticate, middl
 router.get('/maquette/:maquetteId', [middleware.is_authenticate, middleware.isManager], MaquetteController.showMaquette);
 
 router.get('/maquettes', [middleware.is_authenticate, middleware.notForArtist], MaquetteController.getMaquettes);
-router.put('/update/maquette/:maquetteId', [middleware.isArtist], MaquetteController.updateMaquette);
+router.put('/update/maquette/:maquetteId', [middleware.is_authenticate, middleware.isArtist], MaquetteController.updateMaquette);
 router.delete('/delete/maquette/:maquetteId', [middleware.is_authenticate, middleware.isArtist], MaquetteController.deleteMaquette);
 
 export default router;
