@@ -1,6 +1,6 @@
 import Jwt from "jsonwebtoken";
 import User from "../models/User";
-import { IRequest } from '../../interfaces/IRequest';
+import { IRequest } from '../interfaces/IRequest';
 
 const is_authenticate = (req: any, res: any, next: any) => {
   const headers = req.get('Authorization');
